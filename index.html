@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WongCoin Airdrop Registration</title>
+  <style>
+    body {font-family: Arial, sans-serif; padding: 2rem; background:#fafafa;}
+    form {max-width: 420px; margin:auto; background:#fff; padding:2rem; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,.1);}    
+    label {display:block; margin-top:1rem;}
+    input[type="text"], input[type="date"], input[type="email"], select {width:100%; padding:.5rem; border:1px solid #ccc; border-radius:6px;}
+    button {margin-top:1.5rem; padding:.6rem 1.2rem; border:none; border-radius:6px; cursor:pointer; background:#3498db; color:#fff; font-weight:bold;}
+    #hidden-check {display:none; margin-top:1rem;}
+  </style>
+</head>
+<body>
+  <h1 style="text-align:center;">Claim your WongCoin Airdrop</h1>
+  <form id="airdrop-form">
+    <label>First Name
+      <input type="text" id="first" name="first" required>
+    </label>
+    <label>Last Name
+      <input type="text" id="last" name="last" required>
+    </label>
+    <label>Date of Birth
+      <input type="date" id="dob" name="dob" required>
+    </label>
+    <label>Email
+      <input type="email" id="email" name="email" required>
+    </label>
+    <label>Preferred Network
+      <select id="network" name="network" required>
+        <option value="">-- choose --</option>
+        <option>Ethereum</option>
+        <option>Solana</option>
+        <option>Binance Smart Chain</option>
+        <option>Polygon</option>
+      </select>
+    </label>
+    <div id="hidden-check">
+      <label><input type="checkbox" id="agree"> I confirm that I’m not an automated submission</label>
+    </div>
+    <button type="submit" id="submit">Submit</button>
+  </form>
+  <script>
+    const first   = document.getElementById('first');
+    const last    = document.getElementById('last');
+    const dob     = document.getElementById('dob');
+    const email   = document.getElementById('email');
+    const network = document.getElementById('network');
+    const form    = document.getElementById('airdrop-form');
+    const boxWrap = document.getElementById('hidden-check');
+    const agree   = document.getElementById('agree');
+
+    function resetAll() {
+      form.reset();
+      last.disabled = false;
+      boxWrap.style.display = 'none';
+    }
+
+    // Clicking in LAST NAME resets FIRST NAME (one-way chaos)
+    last.addEventListener('focus',  () => { first.value = ''; });
+
+    // Selecting a network nukes DOB
+    network.addEventListener('change', () => { dob.value = ''; });
+
+    // Random gremlin purges on email typing
+    email.addEventListener('input', () => {
+      if (Math.random() < 0.3) {
+        const fields = [last, dob, network];
+        fields[Math.floor(Math.random()*fields.length)].value = '';
+      }
+    });
+
+    // When user ticks the agree box, disable last name field and reset it
+    agree.addEventListener('change', () => {
+      if (agree.checked) {
+        last.value = '';
+        last.disabled = true;
+      } else {
+        last.disabled = false;
+      }
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      // Reveal checkbox if it isn't shown yet
+      if (boxWrap.style.display === 'none') {
+        alert('Please confirm you are not a bot by ticking the checkbox that just appeared.');
+        boxWrap.style.display = 'block';
+        resetAll();
+        return;
+      }
+
+      // Checkbox shown but not checked
+      if (!agree.checked) {
+        alert('Kindly tick the confirmation box before submitting.');
+        resetAll();
+        return;
+      }
+
+      // If last name was disabled (after checking box) block submission
+      if (last.disabled) {
+        alert('We’re unable to continue because the last name field is inactive. Please refresh and try again.');
+        resetAll();
+        return;
+      }
+
+      alert('Your request has been received and is under review.');
+      resetAll();
+    });
+  </script>
+</body>
+</html>
