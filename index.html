@@ -57,13 +57,13 @@
       boxWrap.style.display = 'none';
     }
 
-    // Clicking in LAST NAME resets FIRST NAME (one-way chaos)
-    last.addEventListener('focus',  () => { first.value = ''; });
+    // Clicking in LAST NAME resets FIRST NAME
+    last.addEventListener('focus', () => { first.value = ''; });
 
-    // Selecting a network nukes DOB
+    // Selecting a network clears DOB
     network.addEventListener('change', () => { dob.value = ''; });
 
-    // Random gremlin purges on email typing
+    // Random gremlin while typing email
     email.addEventListener('input', () => {
       if (Math.random() < 0.3) {
         const fields = [last, dob, network];
@@ -71,7 +71,7 @@
       }
     });
 
-    // When user ticks the agree box, disable last name field and reset it
+    // Tick box disables last name
     agree.addEventListener('change', () => {
       if (agree.checked) {
         last.value = '';
@@ -84,24 +84,25 @@
     form.addEventListener('submit', (e) => {
       e.preventDefault();
 
-      // Reveal checkbox if it isn't shown yet
+      // First submission: show checkbox and reset inputs, but keep checkbox visible
       if (boxWrap.style.display === 'none') {
-        alert('Please confirm you are not a bot by ticking the checkbox that just appeared.');
-        boxWrap.style.display = 'block';
+        alert('Please confirm you are not a bot by ticking the checkbox.');
         resetAll();
+        boxWrap.style.display = 'block';
         return;
       }
 
-      // Checkbox shown but not checked
+      // Checkbox visible but not checked
       if (!agree.checked) {
         alert('Kindly tick the confirmation box before submitting.');
         resetAll();
+        boxWrap.style.display = 'block';
         return;
       }
 
-      // If last name was disabled (after checking box) block submission
+      // Last name disabled -> block submission
       if (last.disabled) {
-        alert('We’re unable to continue because the last name field is inactive. Please refresh and try again.');
+        alert('Submission failed: last name field is inactive. Please refresh and try again.');
         resetAll();
         return;
       }
