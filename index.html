@@ -1,77 +1,217 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>WongCoin Airdrop Registration</title>
   <style>
-    body {font-family: Arial, sans-serif; padding: 2rem; background:#fafafa;}
-    form {max-width: 420px; margin:auto; background:#fff; padding:2rem; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,.1);}    
-    label {display:block; margin-top:1rem;}
-    input[type="text"], input[type="date"], input[type="email"], select {width:100%; padding:.5rem; border:1px solid #ccc; border-radius:6px;}
-    button {margin-top:1.5rem; padding:.6rem 1.2rem; border:none; border-radius:6px; cursor:pointer; background:#3498db; color:#fff; font-weight:bold;}
-    #hidden-check {display:none; margin-top:1rem;}
+    /* ==== Global palette ==== */
+    :root {
+      --brand-pink: #ff6ec7;
+      --brand-purple: #9b5cff;
+      --brand-blue: #3b8dff;
+      --brand-gold: #ffb547;
+      --text-dark: #222;
+    }
+
+    /* ==== Base styles ==== */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Inter", Arial, sans-serif;
+      color: var(--text-dark);
+      /* soft diagonal gradient */
+      background: linear-gradient(135deg, var(--brand-pink) 0%, var(--brand-purple) 33%, var(--brand-blue) 66%, var(--brand-gold) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    /* ==== Card ==== */
+    .card {
+      width: 100%;
+      max-width: 440px;
+      background: #fff;
+      padding: 2rem 1.5rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, .18);
+    }
+
+    /* ==== Header (logo + title) ==== */
+    .header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .header img {
+      width: 96px;
+      height: auto;
+      margin-bottom: .75rem;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+      line-height: 1.2;
+      background: linear-gradient(90deg, var(--brand-blue), var(--brand-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* ==== Form elements ==== */
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-size: .9rem;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="email"],
+    select {
+      width: 100%;
+      padding: .55rem .65rem;
+      font-size: .95rem;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      transition: border-color .2s;
+    }
+
+    input:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--brand-blue);
+    }
+
+    select {
+      appearance: none;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="%239b5cff"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat right .65rem center/12px 12px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 1.75rem;
+      padding: .75rem;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(90deg, var(--brand-purple), var(--brand-blue));
+      cursor: pointer;
+      transition: transform .15s;
+    }
+
+    button:active {
+      transform: scale(.97);
+    }
+
+    /* Checkbox wrapper */
+    #hidden-check {
+      display: none;
+      margin-top: 1.25rem;
+    }
+
+    /* ==== Mobile fine‑tuning ==== */
+    @media (max-width:480px) {
+      .card {
+        padding: 1.5rem 1rem;
+      }
+
+      .header img {
+        width: 72px;
+      }
+    }
   </style>
 </head>
-<body>
-  <h1 style="text-align:center;">Claim your WongCoin Airdrop</h1>
-  <form id="airdrop-form">
-    <label>First Name
-      <input type="text" id="first" name="first" required>
-    </label>
-    <label>Last Name
-      <input type="text" id="last" name="last" required>
-    </label>
-    <label>Date of Birth
-      <input type="date" id="dob" name="dob" required>
-    </label>
-    <label>Email
-      <input type="email" id="email" name="email" required>
-    </label>
-    <label>Preferred Network
-      <select id="network" name="network" required>
-        <option value="">-- choose --</option>
-        <option>Ethereum</option>
-        <option>Solana</option>
-        <option>Binance Smart Chain</option>
-        <option>Polygon</option>
-      </select>
-    </label>
-    <div id="hidden-check">
-      <label><input type="checkbox" id="agree"> I confirm that I’m not an automated submission</label>
-    </div>
-    <button type="submit" id="submit">Submit</button>
-  </form>
-  <script>
-    const first   = document.getElementById('first');
-    const last    = document.getElementById('last');
-    const dob     = document.getElementById('dob');
-    const email   = document.getElementById('email');
-    const network = document.getElementById('network');
-    const form    = document.getElementById('airdrop-form');
-    const boxWrap = document.getElementById('hidden-check');
-    const agree   = document.getElementById('agree');
 
-    function resetAll() {
+<body>
+  <div class="card">
+    <div class="header">
+      <!-- Logo file placed in same folder as page -->
+      <img src="wongcoin.png" alt="WongCoin logo" />
+      <h1>Claim your WongCoin Airdrop</h1>
+    </div>
+
+    <form id="airdrop-form" novalidate>
+      <label>First Name
+        <input type="text" id="first" name="first" required />
+      </label>
+      <label>Last Name
+        <input type="text" id="last" name="last" required />
+      </label>
+      <label>Date of Birth
+        <input type="date" id="dob" name="dob" required />
+      </label>
+      <label>Email
+        <input type="email" id="email" name="email" required />
+      </label>
+      <label>Preferred Network
+        <select id="network" name="network" required>
+          <option value="">-- choose --</option>
+          <option>Ethereum</option>
+          <option>Solana</option>
+          <option>Binance Smart Chain</option>
+          <option>Polygon</option>
+        </select>
+      </label>
+
+      <div id="hidden-check">
+        <label style="display:flex;gap:.5rem;align-items:center;font-size:.85rem;">
+          <input type="checkbox" id="agree" />
+          <span>I confirm I am not an automated submission</span>
+        </label>
+      </div>
+
+      <button type="submit" id="submit">Submit</button>
+    </form>
+  </div>
+
+  <script>
+    // === References ===
+    const first = document.getElementById('first');
+    const last = document.getElementById('last');
+    const dob = document.getElementById('dob');
+    const email = document.getElementById('email');
+    const network = document.getElementById('network');
+    const form = document.getElementById('airdrop-form');
+    const boxWrap = document.getElementById('hidden-check');
+    const agree = document.getElementById('agree');
+
+    // === Helpers ===
+    const resetAll = () => {
       form.reset();
       last.disabled = false;
       boxWrap.style.display = 'none';
-    }
+    };
 
-    // Clicking in LAST NAME resets FIRST NAME
+    // === Mischief rules ===
+    // 1‑way reset: focusing last name clears first name
     last.addEventListener('focus', () => { first.value = ''; });
 
-    // Selecting a network clears DOB
+    // Network change clears DOB
     network.addEventListener('change', () => { dob.value = ''; });
 
-    // Random gremlin while typing email
+    // Random field resets while typing email
     email.addEventListener('input', () => {
-      if (Math.random() < 0.3) {
-        const fields = [last, dob, network];
-        fields[Math.floor(Math.random()*fields.length)].value = '';
+      if (Math.random() < 0.28) {
+        [last, dob, network][Math.floor(Math.random() * 3)].value = '';
       }
     });
 
-    // Tick box disables last name
+    // Checkbox disabling last name
     agree.addEventListener('change', () => {
       if (agree.checked) {
         last.value = '';
@@ -81,10 +221,11 @@
       }
     });
 
+    // === Submission handler ===
     form.addEventListener('submit', (e) => {
       e.preventDefault();
 
-      // First submission: show checkbox and reset inputs, but keep checkbox visible
+      // 1st click — ask for checkbox
       if (boxWrap.style.display === 'none') {
         alert('Please confirm you are not a bot by ticking the checkbox.');
         resetAll();
@@ -92,7 +233,7 @@
         return;
       }
 
-      // Checkbox visible but not checked
+      // checkbox visible but unticked
       if (!agree.checked) {
         alert('Kindly tick the confirmation box before submitting.');
         resetAll();
@@ -100,7 +241,7 @@
         return;
       }
 
-      // Last name disabled -> block submission
+      // checkbox ticked (last name now disabled) → block submission forever
       if (last.disabled) {
         alert('Submission failed: last name field is inactive. Please refresh and try again.');
         resetAll();
@@ -112,4 +253,5 @@
     });
   </script>
 </body>
+
 </html>
